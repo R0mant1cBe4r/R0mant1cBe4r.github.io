@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Be4r的博客">
+    <meta name="keyword"  content="Info Security">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        使用Python与Binlog监控Mysql数据库的增删改 - Be4r的博客 | Be4r&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Be yourself </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>Be4r</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archive">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E7%8E%AF%E5%A2%83"><span class="toc-text">使用环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEMysql"><span class="toc-text">安装配置Mysql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8mysql-replication%E7%9B%91%E6%8E%A7MySQL%E7%9A%84binlog%E5%8F%98%E5%8A%A8"><span class="toc-text">使用mysql-replication监控MySQL的binlog变动</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> Be yourself </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        使用Python与Binlog监控Mysql数据库的增删改
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2021-02-25 10:19:31</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Python" title="Python">Python</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#Binlog" title="Binlog">Binlog</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#Mysql" title="Mysql">Mysql</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="使用环境"><a href="#使用环境" class="headerlink" title="使用环境"></a>使用环境</h2><p><code>操作系统</code>：CentOS7<br><code>Mysql版本</code>：5.7<br><code>Python</code>：2.7</p>
+<h2 id="安装配置Mysql"><a href="#安装配置Mysql" class="headerlink" title="安装配置Mysql"></a>安装配置Mysql</h2><p><strong>利用Yum Repository来安装Mysql</strong><br>下载安装可用的mysql-server rpm包</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">wget</span> -i -c http://dev.mysql.com/get/mysql<span class="number">57</span>-community-release-el<span class="number">7</span>-<span class="number">10</span>.noarch.rpm</span><br><span class="line"><span class="attribute">yum</span> localinstall -y mysql<span class="number">57</span>-community-release-el<span class="number">7</span>-<span class="number">10</span>.noarch.rpm</span><br></pre></td></tr></table></figure>
+<p>最终显示下图为成功<br><img src="/img/mysql_setup1.JPG" alt="avatar"></p>
+<p>安装Mysql Server</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install mysql-community-<span class="keyword">server</span></span><br></pre></td></tr></table></figure>
+<p>最终显示下图为成功<br><img src="/img/mysql_setup2.JPG" alt="avatar"></p>
+<p><strong>进行Mysql相关配置</strong><br>启动Mysql服务</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="literal">start</span> mysqld.service</span><br></pre></td></tr></table></figure>
+<p>查看Mysql状态</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">systemctl</span> <span class="selector-tag">status</span> <span class="selector-tag">mysqld</span><span class="selector-class">.service</span></span><br></pre></td></tr></table></figure>
+<p><img src="/img/mysql_setup3.JPG" alt="avatar"><br>查看Mysql初始密码，获取得<code>qOK%qwS7&lt;jI/</code></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grep</span> <span class="string">&quot;password&quot;</span> <span class="regexp">/var/</span>log/mysqld.log</span><br></pre></td></tr></table></figure>
+<p><img src="/img/mysql_setup4.JPG" alt="avatar"><br>登录数据库进行口令修改,此处修改为<code>12@sadAAdsa242</code></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;new password&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>最终显示下图为修改成功<br><img src="/img/mysql_setup5.JPG" alt="avatar"><br>设置允许外部连接（如果没有外部需求此项可不操作）</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;your password&#x27;</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> <span class="keyword">OPTION</span>;</span><br><span class="line">flush <span class="keyword">privileges</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/mysql_setup6.JPG" alt="avatar"><br>修改Mysql字符集</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim <span class="regexp">/etc/my</span>.cnf</span><br></pre></td></tr></table></figure>
+<p>增加以下内容</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[client]</span></span><br><span class="line"><span class="attr">default-character-set</span>=utf8</span><br><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="attr">character-set-server</span>=utf8</span><br><span class="line"><span class="attr">collation-server</span>=utf8_general_ci</span><br></pre></td></tr></table></figure>
+<p><img src="/img/mysql_setup7.JPG" alt="avatar"><br>重启Mysql</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">systemctl</span> <span class="selector-tag">restart</span> <span class="selector-tag">mysqld</span><span class="selector-class">.service</span></span><br></pre></td></tr></table></figure>
+<p>查看修改结果</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">mysql -uroot -p</span></span><br><span class="line"><span class="attribute">status</span></span><br></pre></td></tr></table></figure>
+<p><img src="/img/mysql_setup8.JPG" alt="avatar"></p>
+<p><strong>开启Mysql Binlog</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim <span class="regexp">/etc/my</span>.cnf</span><br></pre></td></tr></table></figure>
+<p>增加以下内容</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="attr">server-id</span>=<span class="number">1</span></span><br><span class="line"><span class="attr">log-bin</span>=mysql-bin</span><br><span class="line"><span class="attr">binlog_format</span>=ROW</span><br></pre></td></tr></table></figure>
+<p><img src="/img/mysql_setup9.JPG" alt="avatar"><br>重启Mysql</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">systemctl</span> <span class="selector-tag">restart</span> <span class="selector-tag">mysqld</span><span class="selector-class">.service</span></span><br></pre></td></tr></table></figure>
+<h2 id="使用mysql-replication监控MySQL的binlog变动"><a href="#使用mysql-replication监控MySQL的binlog变动" class="headerlink" title="使用mysql-replication监控MySQL的binlog变动"></a>使用mysql-replication监控MySQL的binlog变动</h2><p><strong>设置同步账号权限</strong></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span>, <span class="keyword">REPLICATION</span> SLAVE, <span class="keyword">REPLICATION</span> CLIENT <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">&#x27;replicator&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;your password&#x27;</span>;</span><br><span class="line">flush <span class="keyword">privileges</span>;</span><br></pre></td></tr></table></figure>
+<p>最终显示下图为设置成功<br><img src="/img/mysql_setup10.JPG" alt="avatar"></p>
+<p><strong>安装mysql-replication库</strong><br>CentOS7默认没有pip，需要先进行安装</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y <span class="keyword">install</span> epel-release</span><br><span class="line">yum -y <span class="keyword">install</span> python-pip</span><br></pre></td></tr></table></figure>
+<p>2.7版本python已无法使用21及以上pip，因此升级时需要限定版本</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> --upgrade <span class="string">&quot;pip &lt; 21.0&quot;</span></span><br></pre></td></tr></table></figure>
+<p>安装mysql-replication库</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> mysql-replication</span><br></pre></td></tr></table></figure>
+<p><img src="/img/mysql-replication-setup1.JPG" alt="avatar"></p>
+<p><strong>Python脚本demo</strong><br>将下述demo保存成脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pymysqlreplication <span class="keyword">import</span> BinLogStreamReader</span><br><span class="line"><span class="keyword">from</span> pymysqlreplication.row_event <span class="keyword">import</span> (</span><br><span class="line">    DeleteRowsEvent,</span><br><span class="line">    UpdateRowsEvent,</span><br><span class="line">    WriteRowsEvent</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DateEncoder</span>(<span class="params">json.JSONEncoder</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    自定义类，解决报错：</span></span><br><span class="line"><span class="string">    TypeError: Object of type &#x27;datetime&#x27; is not JSON serializable</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">default</span>(<span class="params">self, obj</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(obj, datetime.datetime):</span><br><span class="line">            <span class="keyword">return</span> obj.strftime(<span class="string">&#x27;%Y-%m-%d %H:%M:%S&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">isinstance</span>(obj, datetime.date):</span><br><span class="line">            <span class="keyword">return</span> obj.strftime(<span class="string">&quot;%Y-%m-%d&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> json.JSONEncoder.default(self, obj)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置数据库信息</span></span><br><span class="line">mysql_settings = &#123;</span><br><span class="line">    <span class="string">&#x27;host&#x27;</span>: <span class="string">&#x27;your ip&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;port&#x27;</span>: <span class="number">3306</span>,</span><br><span class="line">    <span class="string">&#x27;user&#x27;</span>: <span class="string">&#x27;root&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;passwd&#x27;</span>: <span class="string">&#x27;your password&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    <span class="comment"># 实例化binlog 流对象</span></span><br><span class="line">    stream = BinLogStreamReader(</span><br><span class="line">        connection_settings=mysql_settings,</span><br><span class="line">        server_id=<span class="number">100</span>,  <span class="comment"># slave标识，唯一</span></span><br><span class="line">        blocking=<span class="literal">True</span>,  <span class="comment"># 阻塞等待后续事件</span></span><br><span class="line">        <span class="comment"># 设定只监控写操作：增、删、改</span></span><br><span class="line">        only_events=[</span><br><span class="line">            DeleteRowsEvent,</span><br><span class="line">            UpdateRowsEvent,</span><br><span class="line">            WriteRowsEvent</span><br><span class="line">        ]</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> binlogevent <span class="keyword">in</span> stream:</span><br><span class="line">        <span class="comment"># binlogevent.dump()  # 打印所有信息</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> binlogevent.rows:</span><br><span class="line">            <span class="comment"># 打印 库名 和 表名</span></span><br><span class="line">            event = &#123;<span class="string">&quot;schema&quot;</span>: binlogevent.schema, <span class="string">&quot;table&quot;</span>: binlogevent.table&#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(binlogevent, DeleteRowsEvent):</span><br><span class="line">                event[<span class="string">&quot;action&quot;</span>] = <span class="string">&quot;delete&quot;</span></span><br><span class="line">                event[<span class="string">&quot;data&quot;</span>] = row[<span class="string">&quot;values&quot;</span>]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">elif</span> <span class="built_in">isinstance</span>(binlogevent, UpdateRowsEvent):</span><br><span class="line">                event[<span class="string">&quot;action&quot;</span>] = <span class="string">&quot;update&quot;</span></span><br><span class="line">                event[<span class="string">&quot;data&quot;</span>] = row[<span class="string">&quot;after_values&quot;</span>]  <span class="comment"># 注意这里不是values</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">elif</span> <span class="built_in">isinstance</span>(binlogevent, WriteRowsEvent):</span><br><span class="line">                event[<span class="string">&quot;action&quot;</span>] = <span class="string">&quot;insert&quot;</span></span><br><span class="line">                event[<span class="string">&quot;data&quot;</span>] = row[<span class="string">&quot;values&quot;</span>]</span><br><span class="line"></span><br><span class="line">            print(json.dumps(event, cls=DateEncoder))</span><br><span class="line">            <span class="comment"># sys.stdout.flush()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># stream.close()  # 如果使用阻塞模式，这行多余了</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">输出数据格式</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    &quot;schema&quot;: &quot;database_name&quot;,    # 数据库名</span></span><br><span class="line"><span class="string">    &quot;table&quot;: &quot;table_name&quot;,  # 表名</span></span><br><span class="line"><span class="string">    &quot;action&quot;: &quot;update&quot;,  # 动作 insert、delete、update</span></span><br><span class="line"><span class="string">    &quot;data&quot;: &#123;            # 数据，里边包含所有字段</span></span><br><span class="line"><span class="string">        &quot;id&quot;: 1, </span></span><br><span class="line"><span class="string">        &quot;data&quot;: &quot;data&quot;, </span></span><br><span class="line"><span class="string">        &quot;data2&quot;: &quot;data2&quot;, </span></span><br><span class="line"><span class="string">        &quot;update_time&quot;: &quot;2019-06-06 16:59:06&quot;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>启动进行监测binlog文件，使用以下命令进行测试</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DATABASE test;</span><br><span class="line">use test;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> test1 (id <span class="type">int</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span> AUTO_INCREMENT, data <span class="type">VARCHAR</span>(<span class="number">255</span>), data2 <span class="type">VARCHAR</span>(<span class="number">255</span>), update_time <span class="type">TIMESTAMP</span>, <span class="keyword">PRIMARY</span> <span class="keyword">KEY</span>(id));</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test1 (data,data2) <span class="keyword">VALUES</span> (&quot;param1&quot;, &quot;param2&quot;);</span><br><span class="line"><span class="keyword">UPDATE</span> test1 <span class="keyword">SET</span> data <span class="operator">=</span> &quot;new_param1&quot;, data2<span class="operator">=</span>&quot;new_param2&quot; <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> test1 <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/mysql-replication-setup2.JPG" alt="avatar"><br>查看实际监控效果<br><img src="/img/mysql-replication-setup3.JPG" alt="avatar"></p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/R0mant1cBe4r">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a target="_blank" rel="noopener" href="https://expzh.com">Be4r&#39;s Page</a></span>
+        <span>/</span>
+        
+        <span><a href="#">It helps SEO</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>  Theme <a target="_blank" rel="noopener" href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
