@@ -185,7 +185,7 @@
 <p>最终显示下图为设置成功<br><img src="/img/mysql_setup10.JPG" alt="avatar"></p>
 <p><strong>安装mysql-replication库</strong><br>CentOS7默认没有pip，需要先进行安装</p>
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y <span class="keyword">install</span> epel-release</span><br><span class="line">yum -y <span class="keyword">install</span> python-pip</span><br></pre></td></tr></table></figure>
-<p>2.7版本python已无法使用21及以上pip，因此升级时需要限定版本</p>
+<p>Python2.7已无法使用21及以上pip，因此升级时需要限定版本</p>
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> --upgrade <span class="string">&quot;pip &lt; 21.0&quot;</span></span><br></pre></td></tr></table></figure>
 <p>安装mysql-replication库</p>
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> mysql-replication</span><br></pre></td></tr></table></figure>
